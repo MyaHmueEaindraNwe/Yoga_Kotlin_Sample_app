@@ -123,4 +123,19 @@ class YogaDBHelper(context: Context) : SQLiteOpenHelper(context, "yoga.db", null
         db.close()
         return courses
     }
+
+    fun editCourse(){
+        
+    }
+
+    fun deleteCourse(courseID:Int): Int {
+        val db = this.writableDatabase
+
+        val result =  db.delete(courseTableName,"id=?",arrayOf(courseID.toString()))
+
+        Log.i("Yoga DB", "Delete record: $result")
+        return result
+    }
 }
+
+
