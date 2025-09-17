@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import kotlin.math.log
 
 class YogaDBHelper(context: Context) : SQLiteOpenHelper(context, "yoga.db", null, 1) {
 
@@ -124,6 +125,43 @@ class YogaDBHelper(context: Context) : SQLiteOpenHelper(context, "yoga.db", null
         return courses
     }
 
+    fun getCourse(courseID: Int): YogaCourse {
+
+        var yogaCourseObj = YogaCourse(0,"","",0,0,0,"","")
+        val db = this.readableDatabase
+        val query = "SELECT * FROM $courseTableName where $id=?"
+        val cursor = db.rawQuery(query, arrayOf(courseID.toString()))
+
+        if (cursor.moveToFirst()) {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(id))
+                val dayOfWeek = cursor.getString(cursor.getColumnIndexOrThrow(dayOfWeek))
+                val timeOfCourse = cursor.getString(cursor.getColumnIndexOrThrow(timeOfCourse))
+                val capacity = cursor.getString(cursor.getColumnIndexOrThrow(capacity))
+                val duration = cursor.getString(cursor.getColumnIndexOrThrow(duration))
+                val price = cursor.getString(cursor.getColumnIndexOrThrow(price))
+                val typeOfClass = cursor.getString(cursor.getColumnIndexOrThrow(typeOfClass))
+                val description = cursor.getString(cursor.getColumnIndexOrThrow(description))
+
+                val yogaCourseObj = YogaCourse(
+                    id,
+                    dayOfWeek,
+                    timeOfCourse,
+                    capacity.toInt(),
+                    duration.toInt(),
+                    price.toInt(),
+                    typeOfClass,
+                    description
+                )
+        }
+
+        cursor.close()
+        db.close()
+        Log.i("Yoga DB", "***Course Selected: $courseId")
+        return yogaCourseObj
+    }
+
+
+
     fun editCourse(yogaCourse: YogaCourse): Int{
         val db = this.writableDatabase
 
@@ -148,6 +186,86 @@ class YogaDBHelper(context: Context) : SQLiteOpenHelper(context, "yoga.db", null
         val db = this.writableDatabase
 
         val result =  db.delete(courseTableName,"$id=?",arrayOf(courseID.toString()))
+        db.close()
+        Log.i("Yoga DB", "Delete record: $result")
+        return result
+    }
+
+    fun resetCourse(): Int {
+        val db = this.writableDatabase
+
+        val result = db.delete(courseTableName,null,null)
+
+        db.close()
+
+        return result
+    }
+
+    fun saveClass(yogaClass: YogaClass): Long{
+        val db = this.writableDatabase
+
+        val values = ContentValues()
+        values.apply {
+            put(dateOfClass,yogaClass.dateOfClass)
+            put(teacher,yogaClass.teacher)
+            put(comments, yogaClass.comments)
+            put(courseId, yogaClass.courseId)
+        }
+
+        val result = db.insert(classTableName,null,values)
+        return result
+    }
+
+    fun getAllClass(): MutableList<YogaClass> {
+        val classList = mutableListOf<YogaClass>()
+
+        val db = this.readableDatabase
+        val query = "SELECT * FROM $classTableName"
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val classId = cursor.getInt(cursor.getColumnIndexOrThrow(id))
+                val date = cursor.getString(cursor.getColumnIndexOrThrow(dateOfClass))
+                val teacher = cursor.getString(cursor.getColumnIndexOrThrow(teacher))
+                val comment = cursor.getString(cursor.getColumnIndexOrThrow(comments))
+                val courseId = cursor.getString(cursor.getColumnIndexOrThrow(courseId))
+
+                val yogaClassObj = YogaClass(classId,courseId,date,teacher,comment)
+
+                classList.add(yogaClassObj)
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+         Log.i("Yoga DB","***Class List size"+classList.size)
+        return classList
+    }
+
+    fun editClass(yogaClass: YogaClass): Int{
+        val db = this.writableDatabase
+
+        val values = ContentValues()
+        values.apply {
+            put(id,yogaClass.classId)
+            put(dateOfClass,yogaClass.dateOfClass)
+            put(teacher,yogaClass.teacher)
+            put(comments, yogaClass.comments)
+            put(courseId, yogaClass.courseId)
+        }
+
+
+        val result = db.update(classTableName,values,"$id=?",arrayOf(yogaClass.classId.toString()))
+        db.close()
+        Log.i("Yoga Db", "Update record: $result")
+        return  result
+    }
+
+    fun deleteClass(courseID:Int): Int {
+        val db = this.writableDatabase
+
+        val result =  db.delete(classTableName,"$id=?",arrayOf(classId.toString()))
         db.close()
         Log.i("Yoga DB", "Delete record: $result")
         return result

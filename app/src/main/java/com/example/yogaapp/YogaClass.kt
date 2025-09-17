@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class YogaClass(
     var classId: Int,
-    var courseId: Int,
+    var courseId: String?,
     var dateOfClass: String,
     var teacher: String,
     var comments: String

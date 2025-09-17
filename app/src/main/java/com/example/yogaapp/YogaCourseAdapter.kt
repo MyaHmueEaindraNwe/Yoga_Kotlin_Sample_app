@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yogaapp.databinding.CourseItemViewBinding
 
-class YogaCourseAdapter(val courses: List<YogaCourse>, val onEditClick:(YogaCourse)-> Unit, val  onDeleteClick:(Int)-> Unit) :
+class YogaCourseAdapter(val courses: List<YogaCourse>, val onEditClick:(YogaCourse)-> Unit, val  onDeleteClick:(Int)-> Unit,val onGetCourseClick:(Int) -> Unit, val onAddClassClick:(Int)->Unit) :
     RecyclerView.Adapter<YogaCourseAdapter.YogaCourseViewHolder>() {
 
     inner class YogaCourseViewHolder(val binding: CourseItemViewBinding) :
@@ -35,6 +35,10 @@ class YogaCourseAdapter(val courses: List<YogaCourse>, val onEditClick:(YogaCour
 
         holder.binding.btnDeleteCourse.setOnClickListener {
             onDeleteClick(course.id)
+        }
+
+        holder.binding.btnAddClass.setOnClickListener {
+            onAddClassClick(course.id)
         }
     }
 

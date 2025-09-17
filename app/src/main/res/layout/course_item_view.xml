@@ -36,17 +36,42 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
-        <Button
-            android:id="@+id/btnEditCourse"
+        <ImageButton
+            android:id="@+id/btnShowDetailCourse"
+            android:src="@drawable/ic_show"
+            android:background="@color/blue"
+            android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
-            android:text="Edit" />
+            />
 
-        <Button
+        <ImageButton
+            android:id="@+id/btnAddClass"
+            android:src="@drawable/ic_edit_detail"
+            android:background="@color/blue"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            />
+
+
+        <ImageButton
+            android:id="@+id/btnEditCourse"
+            android:src="@drawable/ic_edit"
+            android:background="@color/blue"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            />
+
+        <ImageButton
             android:id="@+id/btnDeleteCourse"
-            android:text="Delete"
+            android:src="@drawable/ic_delete"
+            android:background="@color/blue"
+            android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
