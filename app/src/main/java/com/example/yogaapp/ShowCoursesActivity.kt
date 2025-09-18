@@ -2,7 +2,6 @@ package com.example.yogaapp
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -62,6 +61,31 @@ class ShowCoursesActivity : AppCompatActivity() {
     }
 
     private fun addClassAction(courseID: Int){
+        val alertDialog = AlertDialog.Builder(this)
+
+        val dialogLayout = LayoutInflater.from(this).inflate(R.layout.add_class_layout,null)
+        alertDialog.setView(dialogLayout)
+
+        val date = dialogLayout.findViewById<EditText>(R.id.editTxtDateOfClass)
+        val teacher = dialogLayout.findViewById<EditText>(R.id.editTxtTeacherOfClass)
+        val comment = dialogLayout.findViewById<EditText>(R.id.editTxtComment)
+        val btnSave = dialogLayout.findViewById<Button>(R.id.btnSaveClass)
+
+        btnSave.setOnClickListener {
+            val yogaClass = YogaClass (
+                0, courseID.toString(),date.text.toString(),teacher.text.toString(),comment.text.toString()
+            )
+            val result = dbHelper.saveClass(yogaClass)
+            
+            if(result==(-1).toLong()){
+                Toast.makeText(this,"", Toast.LENGTH_LONG).show()
+            }else{
+                Toast.makeText(this,"Save a Class", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        val alert = alertDialog.create()
+        alert.show()
 
     }
 

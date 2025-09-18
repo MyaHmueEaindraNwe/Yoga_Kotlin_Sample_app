@@ -5,7 +5,6 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import kotlin.math.log
 
 class YogaDBHelper(context: Context) : SQLiteOpenHelper(context, "yoga.db", null, 1) {
 
@@ -229,7 +228,7 @@ class YogaDBHelper(context: Context) : SQLiteOpenHelper(context, "yoga.db", null
                 val date = cursor.getString(cursor.getColumnIndexOrThrow(dateOfClass))
                 val teacher = cursor.getString(cursor.getColumnIndexOrThrow(teacher))
                 val comment = cursor.getString(cursor.getColumnIndexOrThrow(comments))
-                val courseId = cursor.getString(cursor.getColumnIndexOrThrow(courseId))
+                val courseId: String? = cursor.getString(cursor.getColumnIndexOrThrow(courseId))
 
                 val yogaClassObj = YogaClass(classId,courseId,date,teacher,comment)
 
