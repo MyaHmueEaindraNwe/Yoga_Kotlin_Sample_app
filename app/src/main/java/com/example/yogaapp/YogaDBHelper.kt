@@ -215,12 +215,12 @@ class YogaDBHelper(context: Context) : SQLiteOpenHelper(context, "yoga.db", null
         return result
     }
 
-    fun getAllClass(): MutableList<YogaClass> {
+    fun getAllClassesByCourseID(coID: Int): List<YogaClass> {
         val classList = mutableListOf<YogaClass>()
 
         val db = this.readableDatabase
-        val query = "SELECT * FROM $classTableName"
-        val cursor = db.rawQuery(query, null)
+        val query = "SELECT * FROM $classTableName where $courseId=?"
+        val cursor = db.rawQuery(query, arrayOf(coID.toString()))
 
         if (cursor.moveToFirst()) {
             do {
